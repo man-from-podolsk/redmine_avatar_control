@@ -1,7 +1,6 @@
-# Плагин Avatar Control (`redmine_avatar_control`) — аватары в Redmine
+# Avatar Control — аватары в Redmine
 
-Наш плагин для Redmine 6.1+ (писался по исходникам 7.0.2), версия 1.0.0 от 23.11.2026. Заменяет сторонний `redmine_avatars`.
-Архив: `redmine_avatar_control-1.0.0.zip`. Контекст и миграция: `redmine_migration_brief-2026-10-18.md`, раздел 12.
+Плагин для Redmine 6.1+ (проверялся по исходникам 7.0.2). Заменяет плагин `redmine_avatars`.
 
 ## Что умеет
 
@@ -78,37 +77,3 @@ systemctl restart redmine
 10. Обычный пользователь открывает `/users/<чужой id>/avatar_control` и получает 403.
 11. Загрузить SVG или файл больше лимита: появляется понятная ошибка, а не Internal error.
 12. Удалить тестового пользователя: его файл пропал из `files/avatar_control`.
-
-## Статус
-
-- 23.11.2026: написан. Проверены синтаксис, логика выбора и скрытия (20 автотестов на заглушках вместо Redmine) и
-  обработка картинок ImageMagick. **В живом Redmine ещё не запускался**: в среде разработки закрыт rubygems.org.
-  Первый запуск — на тестовом `sr-tracker-p`, по чек-листу выше. На бой — только после него.
-- Перед установкой на тесте нужно исправить путь вложений (бриф, 12.5), иначе загрузка упрётся в несуществующую папку.
-
-## Устройство (для доработки)
-
-| Файл | Что делает |
-|---|---|
-| `init.rb` | регистрация плагина, настройки по умолчанию, подключение патчей |
-| `lib/redmine_avatar_control/avatars_helper_patch.rb` | заменяет `AvatarsHelper#avatar`: решает, что рисовать (своя / готовый / стандартный / ничего), учитывая режим, проект и настройку зрителя; `avatar_control_tag` рисует превью на странице выбора |
-| `lib/redmine_avatar_control/settings.rb` | настройки администратора, `hidden_here?(project, viewer)` |
-| `lib/redmine_avatar_control/choice.rb` | выбор пользователя в `pref[:avatar_control]` и `pref[:avatar_control_hide_all]` |
-| `lib/redmine_avatar_control/presets.rb` | готовые аватары: SVG на сервере и адреса Gravatar со случайным хешем |
-| `lib/redmine_avatar_control/storage.rb` | загрузка: проверка типа по содержимому, ImageMagick без shell с таймаутом и лимитами памяти, PNG 256×256 |
-| `lib/redmine_avatar_control/hooks.rb` | ссылки в «Моей учётной записи» и в карточке пользователя, CSS для скрытия элементов тем |
-| `lib/redmine_avatar_control/user_patch.rb` | удаляет картинку вместе с пользователем |
-| `app/controllers/avatar_control_controller.rb` | выдача картинки, страница выбора и сохранение |
-| `app/views/avatar_control/edit.html.erb` | страница выбора аватара |
-| `app/views/settings/_avatar_control_settings.html.erb` | настройки плагина |
-| `lib/tasks/avatar_control.rake` | перенос картинок из `redmine_avatars` |
-| `config/locales/ru.yml`, `en.yml` | переводы |
-
-## Ограничения
-
-- «Стандартный» при включённом Gravatar считается невыбранным: в режиме «Только выбранные» он скрыт, даже если у
-  человека есть картинка на gravatar.com (без запроса к Gravatar это не узнать).
-- Скрытие по проектам работает на страницах проекта (задачи, вики, действия проекта). На общих страницах
-  (общий список действий, «Моя страница») проекта нет, там действуют режим и личная настройка.
-- Инициалы исполнителя в темах Rubylode рисует скрипт темы, их скрывает CSS из настроек (`.assignee-initials`);
-  для других тем селекторы добавляются там же.
