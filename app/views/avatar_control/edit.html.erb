@@ -1,0 +1,116 @@
+<% own = (@user == User.current && params[:user_id].blank?) %>
+<% form_url = own ? my_avatar_control_path : user_avatar_control_path(@user) %>
+<% effective = @choice.effective %>
+<% selected = effective == :preset ? "preset:#{@choice.preset}" : effective.to_s %>
+<% preview = 48 %>
+
+<% html_title l(:avatar_control_label) %>
+
+<div class="contextual">
+  <%= link_to(sprite_icon('user', l(:label_my_account)), my_account_path, class: 'icon icon-user') if own %>
+  <%= link_to(sprite_icon('edit', @user.name), edit_user_path(@user), class: 'icon icon-edit') if !own && User.current.admin? %>
+</div>
+
+<h2><%= own ? l(:avatar_control_label) : "#{l(:avatar_control_label)}: #{@user.name}" %></h2>
+
+<style>
+  #avatar-control-form .avatar-control-options { display: flex; flex-wrap: wrap; gap: 12px; margin: 6px 0 4px; }
+  #avatar-control-form .avatar-control-option { display: inline-flex; flex-direction: column; align-items: center;
+    gap: 6px; padding: 10px; min-inline-size: 84px; border: 1px solid #dee2e6; border-radius: 8px; cursor: pointer;
+    text-align: center; font-weight: normal; float: none; margin: 0; inline-size: auto; }
+  #avatar-control-form .avatar-control-option:has(input:checked) { border-color: #1971c2; box-shadow: 0 0 0 2px #a5d8ff; }
+  #avatar-control-form .avatar-control-option input { margin: 0; }
+  #avatar-control-form .avatar-control-empty { display: inline-flex; inline-size: <%= preview %>px; block-size: <%= preview %>px;
+    align-items: center; justify-content: center; border: 1px dashed #adb5bd; border-radius: 20%; color: #868e96; font-size: 11px; }
+  #avatar-control-form .avatar.s<%= preview %> { inline-size: <%= preview %>px; block-size: <%= preview %>px; }
+  #avatar-control-form span[role="img"].avatar.s<%= preview %> { font-size: <%= (preview * 0.4).round %>px; }
+  #avatar-control-form .avatar-control-block { margin: 0 0 14px; }
+  #avatar-control-form h3 { margin: 18px 0 6px; }
+</style>
+
+<% if @settings.mode == 'none' %>
+  <p class="warning"><%= l(:avatar_control_notice_mode_none) %></p>
+<% elsif @settings.mode == 'only_set' %>
+  <p class="info"><%= l(:avatar_control_notice_mode_only_set) %></p>
+<% end %>
+
+<%= form_tag(form_url, multipart: true, id: 'avatar-control-form') do %>
+<div class="box">
+
+  <h3><%= l(:avatar_control_heading_choose) %></h3>
+  <div class="avatar-control-options">
+    <label class="avatar-control-option">
+      <%= avatar_control_tag(@user, :default, @choice, { size: preview }) %>
+      <span><%= radio_button_tag 'choice', 'default', selected == 'default' %> <%= l(:avatar_control_choice_default) %></span>
+    </label>
+
+    <% if @settings.flag?('allow_upload') %>
+      <label class="avatar-control-option">
+        <% if @choice.uploaded? %>
+          <%= avatar_control_tag(@user, :upload, @choice, { size: preview }) %>
+        <% else %>
+          <span class="avatar-control-empty"><%= l(:avatar_control_no_picture) %></span>
+        <% end %>
+        <span><%= radio_button_tag 'choice', 'upload', selected == 'upload', id: 'choice_upload' %> <%= l(:avatar_control_choice_upload) %></span>
+      </label>
+    <% end %>
+
+    <% if @settings.flag?('allow_user_none') %>
+      <label class="avatar-control-option">
+        <span class="avatar-control-empty">&mdash;</span>
+        <span><%= radio_button_tag 'choice', 'none', selected == 'none' %> <%= l(:avatar_control_choice_none) %></span>
+      </label>
+    <% end %>
+  </div>
+
+  <% if @settings.flag?('allow_upload') %>
+    <div class="avatar-control-block">
+      <h3><%= l(:avatar_control_heading_upload) %></h3>
+      <%= file_field_tag 'avatar_file', accept: 'image/png,image/jpeg,image/webp,image/gif', id: 'avatar_control_file' %>
+      <em class="info"><%= l(:avatar_control_upload_info, size: @settings.max_bytes / 1024 / 1024) %></em>
+      <% if @choice.uploaded? %>
+        <label style="font-weight: normal;">
+          <%= check_box_tag 'remove_upload', '1', false %> <%= l(:avatar_control_remove_upload) %>
+        </label>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if @presets.any? %>
+    <h3><%= l(:avatar_control_heading_presets) %></h3>
+    <div class="avatar-control-options">
+      <% @presets.each do |style| %>
+        <label class="avatar-control-option">
+          <%= avatar_control_tag(@user, :preset, @choice, { size: preview }, style: style) %>
+          <span><%= radio_button_tag 'choice', "preset:#{style}", selected == "preset:#{style}", id: "choice_preset_#{style}" %>
+            <%= l("avatar_control_preset_#{style}") %></span>
+        </label>
+      <% end %>
+    </div>
+    <p>
+      <%= submit_tag l(:avatar_control_shuffle), name: 'shuffle', class: 'button-small' %>
+      <em class="info"><%= l(:avatar_control_shuffle_info) %></em>
+    </p>
+  <% end %>
+
+  <% if @settings.flag?('allow_viewer_hide') %>
+    <h3><%= l(:avatar_control_heading_view) %></h3>
+    <label style="font-weight: normal;">
+      <%= check_box_tag 'hide_all', '1', @choice.hide_all? %>
+      <%= own ? l(:avatar_control_hide_all) : l(:avatar_control_hide_all_for_user) %>
+    </label>
+  <% end %>
+</div>
+
+<%= submit_tag l(:button_save) %>
+<% end %>
+
+<%= javascript_tag do %>
+  (function () {
+    var file = document.getElementById('avatar_control_file');
+    var radio = document.getElementById('choice_upload');
+    if (file && radio) {
+      file.addEventListener('change', function () { if (file.value) { radio.checked = true; } });
+    }
+  })();
+<% end %>

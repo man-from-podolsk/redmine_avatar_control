@@ -1,0 +1,88 @@
+<% values = RedmineAvatarControl::Settings::DEFAULTS.merge((settings || {}).to_h.stringify_keys) %>
+<% storage = RedmineAvatarControl::Storage %>
+
+<fieldset class="box tabular">
+  <legend><%= l(:avatar_control_section_display) %></legend>
+
+  <p>
+    <label><%= l(:avatar_control_setting_mode) %></label>
+    <% RedmineAvatarControl::Settings::MODES.each do |mode| %>
+      <label class="block">
+        <%= radio_button_tag 'settings[mode]', mode, values['mode'] == mode %>
+        <%= l("avatar_control_mode_#{mode}") %>
+      </label>
+    <% end %>
+  </p>
+
+  <p>
+    <label for="avatar_control_hidden_projects"><%= l(:avatar_control_setting_hidden_projects) %></label>
+    <%= hidden_field_tag 'settings[hidden_project_ids][]', '' %>
+    <%= select_tag 'settings[hidden_project_ids][]',
+                   project_tree_options_for_select(Project.active.to_a,
+                                                   selected: Project.where(id: Array(values['hidden_project_ids']).map(&:to_i)).to_a),
+                   multiple: true, size: 10, id: 'avatar_control_hidden_projects' %>
+    <em class="info"><%= l(:avatar_control_setting_hidden_projects_info) %></em>
+  </p>
+
+  <p>
+    <label for="avatar_control_hide_in_subprojects"><%= l(:avatar_control_setting_hide_in_subprojects) %></label>
+    <%= hidden_field_tag 'settings[hide_in_subprojects]', '0', id: nil %>
+    <%= check_box_tag 'settings[hide_in_subprojects]', '1', values['hide_in_subprojects'].to_s == '1',
+                      id: 'avatar_control_hide_in_subprojects' %>
+  </p>
+
+  <p>
+    <label for="avatar_control_extra_hide_selectors"><%= l(:avatar_control_setting_extra_selectors) %></label>
+    <%= text_area_tag 'settings[extra_hide_selectors]', values['extra_hide_selectors'], rows: 3, cols: 40,
+                      id: 'avatar_control_extra_hide_selectors' %>
+    <em class="info"><%= l(:avatar_control_setting_extra_selectors_info) %></em>
+  </p>
+</fieldset>
+
+<fieldset class="box tabular">
+  <legend><%= l(:avatar_control_section_users) %></legend>
+
+  <% [%w[allow_upload avatar_control_setting_allow_upload],
+      %w[allow_presets avatar_control_setting_allow_presets],
+      %w[allow_gravatar_presets avatar_control_setting_allow_gravatar_presets],
+      %w[allow_user_none avatar_control_setting_allow_user_none],
+      %w[allow_viewer_hide avatar_control_setting_allow_viewer_hide]].each do |key, label| %>
+    <p>
+      <label for="avatar_control_<%= key %>"><%= l(label) %></label>
+      <%= hidden_field_tag "settings[#{key}]", '0', id: nil %>
+      <%= check_box_tag "settings[#{key}]", '1', values[key].to_s == '1', id: "avatar_control_#{key}" %>
+      <% if key == 'allow_gravatar_presets' %>
+        <em class="info"><%= l(:avatar_control_setting_allow_gravatar_presets_info,
+                               url: Redmine::Configuration['avatar_server_url']) %></em>
+      <% end %>
+    </p>
+  <% end %>
+
+  <p>
+    <label for="avatar_control_max_size_mb"><%= l(:avatar_control_setting_max_size) %></label>
+    <%= number_field_tag 'settings[max_size_mb]', values['max_size_mb'], min: 1, max: 20,
+                         id: 'avatar_control_max_size_mb', style: 'inline-size: 5em;' %>
+  </p>
+</fieldset>
+
+<fieldset class="box tabular">
+  <legend><%= l(:avatar_control_section_check) %></legend>
+  <p>
+    <label><%= l(:avatar_control_check_directory) %></label>
+    <code><%= storage.directory %></code>
+    <% if storage.writable? %>
+      <span class="icon icon-ok"><%= l(:avatar_control_check_ok) %></span>
+    <% else %>
+      <span class="icon icon-error" style="color: #c92a2a;"><%= l(:avatar_control_check_not_writable) %></span>
+    <% end %>
+  </p>
+  <p>
+    <label>ImageMagick</label>
+    <code><%= storage.convert_bin %></code>
+    <% if storage.convert_available? %>
+      <span class="icon icon-ok"><%= l(:avatar_control_check_ok) %></span>
+    <% else %>
+      <span class="icon icon-error" style="color: #c92a2a;"><%= l(:avatar_control_check_no_imagemagick) %></span>
+    <% end %>
+  </p>
+</fieldset>
