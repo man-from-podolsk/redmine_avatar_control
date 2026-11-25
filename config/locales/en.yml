@@ -1,63 +1,67 @@
 en:
-  avatar_control_label: "Avatar"
-  avatar_control_change: "Change avatar"
-
-  avatar_control_heading_choose: "What to show"
-  avatar_control_heading_upload: "Own picture"
-  avatar_control_heading_presets: "Preset avatars"
-  avatar_control_heading_view: "Viewing"
-  avatar_control_choice_default: "Default"
-  avatar_control_choice_upload: "Own picture"
-  avatar_control_choice_none: "No avatar"
-  avatar_control_no_picture: "none"
-  avatar_control_upload_info: "PNG, JPG, WebP or GIF, up to %{size} MB. The picture is cropped to a square; metadata such as phone location is removed."
-  avatar_control_remove_upload: "Delete the uploaded picture"
-  avatar_control_shuffle: "Shuffle"
-  avatar_control_shuffle_info: "Draw the preset avatars again with other colours and patterns."
-  avatar_control_hide_all: "Do not show me any avatars (mine or others')"
-  avatar_control_hide_all_for_user: "Do not show avatars to this user"
-
-  avatar_control_preset_initials: "Initials"
-  avatar_control_preset_identicon: "Pattern"
-  avatar_control_preset_pixel: "Pixels"
-  avatar_control_preset_color: "Colour"
-  avatar_control_preset_silhouette: "Silhouette"
-  avatar_control_preset_monsterid: "Monster"
-  avatar_control_preset_wavatar: "Wavatar"
-  avatar_control_preset_robohash: "Robot"
-  avatar_control_preset_retro: "Retro"
-
-  avatar_control_notice_mode_none: "Avatars are turned off by the administrator and are not shown anywhere. Your choice is kept for when they are turned on."
-  avatar_control_notice_mode_only_set: "Only chosen avatars are shown: an own picture or a preset. With Default there is no avatar."
-
-  avatar_control_error_blank: "Choose a picture file."
-  avatar_control_error_too_large: "The file is too large."
-  avatar_control_error_type: "This file type is not accepted: use PNG, JPG, WebP or GIF."
-  avatar_control_error_processing: "The picture could not be processed."
-  avatar_control_error_no_imagemagick: "ImageMagick is not installed on the server, so pictures cannot be processed. Tell your administrator."
-  avatar_control_error_storage: "The picture could not be saved on the server. Tell your administrator."
-  avatar_control_error_not_allowed: "The administrator has not allowed this option."
-
-  avatar_control_section_display: "Where avatars are shown"
-  avatar_control_section_users: "What users may do"
-  avatar_control_section_check: "Server check"
-  avatar_control_setting_mode: "Mode"
-  avatar_control_mode_all: "Show for everyone (without a choice: Redmine's default, initials or Gravatar)"
-  avatar_control_mode_only_set: "Only chosen ones (own picture or preset), nothing for the rest"
-  avatar_control_mode_none: "Show nowhere"
-  avatar_control_setting_hidden_projects: "Hide avatars in projects"
-  avatar_control_setting_hidden_projects_info: "Ctrl/Cmd + click to select several or to deselect."
-  avatar_control_setting_hide_in_subprojects: "And in their subprojects"
-  avatar_control_setting_extra_selectors: "Hide together with avatars (CSS)"
-  avatar_control_setting_extra_selectors_info: "Elements themes draw on their own, one selector per line. .assignee-initials is the assignee initials of the Rubylode themes."
-  avatar_control_setting_allow_upload: "Upload an own picture"
-  avatar_control_setting_allow_presets: "Choose a preset avatar"
-  avatar_control_setting_allow_gravatar_presets: "Gravatar preset avatars"
-  avatar_control_setting_allow_gravatar_presets_info: "Monster, Wavatar, Robot, Retro. Browsers load them from %{url}; no e-mail address is sent, only a random code. Needs internet access."
-  avatar_control_setting_allow_user_none: "Choose \"No avatar\""
-  avatar_control_setting_allow_viewer_hide: "Turn avatars off for themselves"
-  avatar_control_setting_max_size: "Largest file size, MB"
-  avatar_control_check_directory: "Picture folder"
-  avatar_control_check_ok: "OK"
-  avatar_control_check_not_writable: "Redmine cannot write here: create the folder and give it to the user Redmine runs as"
-  avatar_control_check_no_imagemagick: "not found: picture uploads will not work"
+  avatar_control_label: Avatar
+  avatar_control_change: Change avatar
+  avatar_control_heading_choose: What to show
+  avatar_control_heading_upload: Own picture
+  avatar_control_heading_presets: Preset avatars
+  avatar_control_heading_view: Viewing
+  avatar_control_choice_default: Default
+  avatar_control_choice_upload: Own picture
+  avatar_control_choice_none: No avatar
+  avatar_control_no_picture: none
+  avatar_control_upload_info: PNG, JPG, WebP or GIF, up to %{size} MB. The picture is cropped to a square; metadata such as phone location is removed.
+  avatar_control_remove_upload: Delete the uploaded picture
+  avatar_control_shuffle: Shuffle
+  avatar_control_shuffle_info: Draw the preset avatars again with other colours and patterns.
+  avatar_control_hide_all: Do not show me any avatars (mine or others')
+  avatar_control_hide_all_for_user: Do not show avatars to this user
+  avatar_control_preset_initials: Initials
+  avatar_control_preset_identicon: Pattern
+  avatar_control_preset_pixel: Pixels
+  avatar_control_preset_color: Colour
+  avatar_control_preset_silhouette: Silhouette
+  avatar_control_preset_monsterid: Monster
+  avatar_control_preset_wavatar: Wavatar
+  avatar_control_preset_robohash: Robot
+  avatar_control_preset_retro: Retro
+  avatar_control_notice_mode_none: Avatars are turned off by the administrator and are not shown anywhere. Your choice is kept for when they are turned on.
+  avatar_control_notice_mode_only_set: 'Only chosen avatars are shown: an own picture or a preset. With Default there is no avatar.'
+  avatar_control_error_blank: Choose a picture file.
+  avatar_control_error_too_large: The file is too large.
+  avatar_control_error_type: 'This file type is not accepted: use PNG, JPG, WebP or GIF.'
+  avatar_control_error_processing: The picture could not be processed.
+  avatar_control_error_no_imagemagick: ImageMagick is not installed on the server, so pictures cannot be processed. Tell your administrator.
+  avatar_control_error_storage: The picture could not be saved on the server. Tell your administrator.
+  avatar_control_error_not_allowed: The administrator has not allowed this option.
+  avatar_control_section_display: Where avatars are shown
+  avatar_control_section_users: What users may do
+  avatar_control_section_check: Server check
+  avatar_control_setting_mode: Mode
+  avatar_control_mode_all: 'Show for everyone (without a choice: Redmine''s default, initials or Gravatar)'
+  avatar_control_mode_only_set: Only chosen ones (own picture or preset), nothing for the rest
+  avatar_control_mode_none: Show nowhere
+  avatar_control_setting_hidden_projects: Hide avatars in projects
+  avatar_control_setting_hidden_projects_info: Ctrl/Cmd + click to select several or to deselect.
+  avatar_control_setting_hide_in_subprojects: And in their subprojects
+  avatar_control_setting_extra_selectors: Hide together with avatars (CSS)
+  avatar_control_setting_extra_selectors_info: Elements themes draw on their own, one selector per line. .assignee-initials is the assignee initials of the Rubylode themes.
+  avatar_control_setting_allow_upload: Upload an own picture
+  avatar_control_setting_allow_presets: Choose a preset avatar
+  avatar_control_setting_allow_gravatar_presets: Gravatar preset avatars
+  avatar_control_setting_allow_gravatar_presets_info: Monster, Wavatar, Robot, Retro. Browsers load them from %{url}; no e-mail address is sent, only a random code. Needs internet access.
+  avatar_control_setting_allow_user_none: Choose "No avatar"
+  avatar_control_setting_allow_viewer_hide: Turn avatars off for themselves
+  avatar_control_setting_max_size: Largest file size, MB
+  avatar_control_check_directory: Picture folder
+  avatar_control_check_ok: OK
+  avatar_control_check_not_writable: 'Redmine cannot write here: create the folder and give it to the user Redmine runs as'
+  avatar_control_check_no_imagemagick: 'not found: picture uploads will not work'
+  avatar_control_update_title: 'An update is available for «%{name}»: %{installed} → %{latest}.'
+  avatar_control_update_title_git: «%{name}» has %{count} new changes on GitHub.
+  avatar_control_update_how_git: 'To update:'
+  avatar_control_update_how_copy_1: 'To update: download the'
+  avatar_control_update_archive: archive from GitHub
+  avatar_control_update_how_copy_2: and replace the plugins/%{folder} folder with its contents (rename the old folder instead of deleting it).
+  avatar_control_update_restart: Then restart Redmine.
+  avatar_control_update_migrate: 'This version changes the database; after replacing, run:'
+  avatar_control_update_all_changes: All changes

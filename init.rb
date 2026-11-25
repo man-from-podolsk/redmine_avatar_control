@@ -13,9 +13,11 @@
 
 Redmine::Plugin.register :redmine_avatar_control do
   name 'Avatar Control'
-  author 'Infra'
+  author 'man-from-podolsk'
+  author_url 'https://github.com/man-from-podolsk'
   description 'Own, preset or no avatars; hide avatars globally, when not set, per project or for yourself.'
-  version '1.0.0'
+  version '1.1.0'
+  url 'https://github.com/man-from-podolsk/redmine_avatar_control'
   requires_redmine version_or_higher: '6.1.0'
 
   settings default: RedmineAvatarControl::Settings::DEFAULTS.dup,

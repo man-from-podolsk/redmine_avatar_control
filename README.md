@@ -54,6 +54,25 @@ sudo -u www-data env PATH="<путь к ruby/bundle>:$PATH" RAILS_ENV=production
 # без DRY_RUN=1 — перенести; FORCE=1 — перезаписать уже загруженные в Avatar Control
 ```
 
+## Обновление
+
+Раз в сутки модуль сверяет свою версию с GitHub и, если есть новая, показывает уведомление на страницах «Администрирование» и «Модули» (видят только администраторы): что изменилось
+(из `CHANGELOG.md`) и как обновить. Запрос идёт с сервера Redmine на `api.github.com` и `raw.githubusercontent.com`
+в фоне и не замедляет страницы. Проверить сразу: `bundle exec rake redmine:avatar_control:check_update RAILS_ENV=production`.
+
+Если модуль установлен копированием:
+
+1. Скачайте архив https://github.com/man-from-podolsk/redmine_avatar_control/archive/refs/heads/main.zip.
+2. Переименуйте старую папку: `mv plugins/redmine_avatar_control /root/redmine_avatar_control.old`.
+3. Распакуйте архив в `plugins/redmine_avatar_control` (папка в архиве называется `redmine_avatar_control-main`, её нужно переименовать),
+   `chown -R www-data:www-data plugins/redmine_avatar_control`.
+4. Если в `CHANGELOG.md` для новой версии сказано «миграция», выполните
+   `bundle exec rake redmine:plugins:migrate NAME=redmine_avatar_control RAILS_ENV=production`.
+5. Перезапустите Redmine.
+
+Если установлен через `git clone`: `cd plugins/redmine_avatar_control && git pull` и перезапуск. Уведомление в этом случае
+считает новые коммиты, а не версии.
+
 ## Удаление
 
 ```bash

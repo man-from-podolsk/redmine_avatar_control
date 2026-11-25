@@ -20,6 +20,22 @@ module RedmineAvatarControl
       end
     end
 
+    # Administration and Plugins pages: a notice for administrators when GitHub has a newer version
+    def view_layouts_base_content(context = {})
+      controller = context[:controller]
+      return '' unless controller && User.current.admin?
+      return '' unless RedmineAvatarControl::UpdateCheck.update_admin_page?(controller)
+
+      data = RedmineAvatarControl::UpdateCheck.status
+      return '' unless RedmineAvatarControl::UpdateCheck.update_available?(data)
+
+      id = 'redmine_avatar_control_update_notice'
+      html = content_tag(:div, RedmineAvatarControl::UpdateCheck.render_notice(self, data, 'avatar_control'), class: 'flash warning', id: id)
+      # Moved to the top of the page content
+      html + javascript_tag("(function(){var n=document.getElementById('#{id}'),c=document.getElementById('content');" \
+                            "if(n&&c){c.insertBefore(n,c.firstChild);}})();")
+    end
+
     # Elements that themes draw on their own (e.g. the Rubylode initials beside assignees) are hidden with
     # CSS wherever avatars are hidden.
     def view_layouts_base_html_head(context = {})
